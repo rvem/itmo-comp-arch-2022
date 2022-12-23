@@ -4,7 +4,7 @@
 `include "d_flop.v"
 
 module cpu_test();
-  reg clk = 1;
+  reg clk;
 
   // Инициализируем процессор
   wire [31:0] instruction_memory_a, instruction_memory_rd;
