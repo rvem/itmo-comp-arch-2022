@@ -42,6 +42,76 @@ eq:
 sub $t0, $s0, $s1
 ```
 
+## [`comparch_is_cool.dat`](./comparch_is_cool.dat)
+
+Загружает в память строчку "CompArch is coool! :D".
+Ячейки памяти заполняются кодами соответствущих ASCII символов.
+
+В процессе генерации строки используются команды:
+⋅⋅*ADDI
+⋅⋅*ADD
+⋅⋅*SUB
+⋅⋅*AND
+⋅⋅*ANDI
+⋅⋅*SW
+⋅⋅*BEQ
+⋅⋅*J
+
+Генерация требует как минимум 65 тактов процессора.
+
+```
+ADDI $s0, $0, 67
+ADDI $t0, $0, 44
+ADD $s1, $s0, $t0
+ADDI $t1, $0, 0x2
+SUB $s2, $s1, $t1
+ADDI $s3, $0, 112
+ANDI $s4, $s0, 121
+ADDI $t2, $0, 511
+ADDI $t3, $0, 114
+AND $s5, $t2, $t3
+ANDI $s6, $t2, 99
+ADDI $t3, $0, 114
+ADDI $t4, $0, 104
+SUB $s7, $s5, $t1
+SUB $s7, $s7, $t1
+BEQ $s7, $t4, 1
+J 14
+SW $s0, 0, $0
+SW $s1, 4, $0
+SW $s2, 8, $0
+SW $s3, 12, $0
+SW $s4, 16, $0
+SW $s5, 20, $0
+SW $s6, 24, $0
+SW $s7, 28, $0
+ADDI $s0, $0, 32
+ADDI $s1, $0, 105
+ADDI $s2, $0, 115
+ADDI $s3, $0, 99
+SW $s0, 32, $0
+SW $s1, 36, $0
+SW $s2, 40, $0
+SW $s0, 44, $0
+SW $s3, 48, $0
+ADDI $t2, $0, 111
+ADDI $t0, $0, 48
+ADDI $t1, $0, 60
+ADDI $t0, $t0, 4
+SW $t2, 0, $t0
+BEQ $t0, $t1, 1
+J 37
+ADDI $s1, $0, 108
+ADDI $s2, $0, 33
+SW $s0, 72 $0
+ADDI $s3, $0, 58
+ADDI $s4, $0, 68
+SW $s1, 64, $0
+SW $s2, 68, $0
+SW $s3, 76, $0
+SW $s4, 80, $0
+```
+
 ## [`hello_world.dat`](./hello_world.dat)
 
 Загружает ASCII строчку "Hello world!" в память.
