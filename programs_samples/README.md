@@ -69,39 +69,39 @@ SUB $s7, $s5, $t1
 SUB $s7, $s7, $t1
 BEQ $s7, $t4, 1
 J 14
-SW $s0, 0, $0
-SW $s1, 4, $0
-SW $s2, 8, $0
-SW $s3, 12, $0
-SW $s4, 16, $0
-SW $s5, 20, $0
-SW $s6, 24, $0
-SW $s7, 28, $0
+SW $s0, 0, $0 # C
+SW $s1, 4, $0 # o
+SW $s2, 8, $0 # m
+SW $s3, 12, $0 # p
+SW $s4, 16, $0 # A
+SW $s5, 20, $0 # r
+SW $s6, 24, $0 # c
+SW $s7, 28, $0 # h
 ADDI $s0, $0, 32
 ADDI $s1, $0, 105
 ADDI $s2, $0, 115
 ADDI $s3, $0, 99
-SW $s0, 32, $0
-SW $s1, 36, $0
-SW $s2, 40, $0
-SW $s0, 44, $0
-SW $s3, 48, $0
+SW $s0, 32, $0 # ' '
+SW $s1, 36, $0 # i
+SW $s2, 40, $0 # s
+SW $s0, 44, $0 # ' '
+SW $s3, 48, $0 # c
 ADDI $t2, $0, 111
 ADDI $t0, $0, 48
 ADDI $t1, $0, 60
 ADDI $t0, $t0, 4
-SW $t2, 0, $t0
+SW $t2, 0, $t0 # o (x3 in loop)
 BEQ $t0, $t1, 1
 J 37
 ADDI $s1, $0, 108
 ADDI $s2, $0, 33
-SW $s0, 72 $0
+SW $s0, 72 $0 # l
 ADDI $s3, $0, 58
 ADDI $s4, $0, 68
-SW $s1, 64, $0
-SW $s2, 68, $0
-SW $s3, 76, $0
-SW $s4, 80, $0
+SW $s1, 64, $0 # !
+SW $s2, 68, $0 # ' '
+SW $s3, 76, $0 # :
+SW $s4, 80, $0 # D
 ```
 
 ## [`hello_world.dat`](./hello_world.dat)
