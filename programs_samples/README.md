@@ -17,6 +17,17 @@ or $s5, $s1, $s0
 slt $s6, $s1, $s0
 ```
 
+Ожидаемое поведение:
+```
+Register:         16, value:          7
+Register:         17, value:          8
+Register:         18, value:         15
+Register:         19, value:          1
+Register:         20, value:          0
+Register:         21, value:         15
+Register:         22, value:          0
+```
+
 ## [`memory.dat`](./memory.dat)
 
 Проверка работы с памятью.
@@ -29,6 +40,19 @@ addi $t4, $0, 511
 sw $t4, 4($0)
 ```
 
+Ожидаемое поведение:
+
+```
+Register:          8, value:      32767
+Register:          9, value:      32767
+Register:         10, value:          0
+Register:         11, value:          0
+Register:         12, value:        511
+...
+Addr:          0, value:      32767
+Addr:          4, value:        511
+```
+
 ## [`branch.dat`](./branch.dat)
 
 Проверка работы условного перехода.
@@ -37,10 +61,22 @@ sw $t4, 4($0)
 addi $s0, $0, 8
 addi $s1, $0, 8
 beq $s0, $s1, eq
-add $t0, $s0, $s1
+add $t1, $s0, $s1
+beq $0, $0, end
 eq:
 sub $t0, $s0, $s1
+end:
 ```
+
+Ожидаемое поведение:
+```
+Register:          8, value:          0
+Register:          9, value:          0
+...
+Register:         16, value:          8
+Register:         17, value:          8
+```
+
 
 ## [`comparch_is_cool.dat`](./comparch_is_cool.dat)
 
@@ -219,4 +255,39 @@ sub $t1, $t1, $t2
 beq $zero, $zero, loop
 halt:
 beq $zero, $zero, halt
+```
+
+Ожидаемый результат:
+```
+Register:          8, value: 1919706145
+...
+Addr:          0, value: 1214606444
+Addr:          4, value: 1864398703
+Addr:          8, value: 1919706145
+```
+
+Пояснение: 96 бит из памяти соответствуют 12 ASCII символам
+```
+01001000 01100101 01101100 01101100 01101111 00100000 01110111 01101111 01110010 01101100 01100100 00100001
+```
+
+## [`jump.dat`](./jump.dat)
+
+```
+addi $s0, $0, 7
+j jal_label # j 3
+addi $s0, $0, 8
+jal_label:
+jal end_label # jal 5
+addi $s0, $0, 9
+end_label:
+sw $ra, 0($0)
+```
+Ожидаемый результат:
+```
+Register:          16, value: 7
+...
+Register:          31, value: 16
+...
+Addr:          0, value: 16
 ```
