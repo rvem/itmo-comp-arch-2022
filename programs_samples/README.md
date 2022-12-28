@@ -140,6 +140,47 @@ SW $s3, 76, $0 # :
 SW $s4, 80, $0 # D
 ```
 
+Ожидаемый результат:
+```
+Register:          8, value:         60
+Register:          9, value:         60
+Register:         10, value:        111
+Register:         11, value:        114
+Register:         12, value:        104
+Register:         13, value:          0
+Register:         14, value:          0
+Register:         15, value:          0
+Register:         16, value:         32
+Register:         17, value:        108
+Register:         18, value:         33
+Register:         19, value:         58
+Register:         20, value:         68
+Register:         21, value:        114
+Register:         22, value:         99
+Register:         23, value:        104
+Addr:          0, value:         67
+Addr:          4, value:        111
+Addr:          8, value:        109
+Addr:         12, value:        112
+Addr:         16, value:         65
+Addr:         20, value:        114
+Addr:         24, value:         99
+Addr:         28, value:        104
+Addr:         32, value:         32
+Addr:         36, value:        105
+Addr:         40, value:        115
+Addr:         44, value:         32
+Addr:         48, value:         99
+Addr:         52, value:        111
+Addr:         56, value:        111
+Addr:         60, value:        111
+Addr:         64, value:        108
+Addr:         68, value:         33
+Addr:         72, value:         32
+Addr:         76, value:         58
+Addr:         80, value:         68
+```
+
 ## [`hello_world.dat`](./hello_world.dat)
 
 Загружает ASCII строчку "Hello world!" в память.
@@ -260,6 +301,8 @@ beq $zero, $zero, halt
 Ожидаемый результат:
 ```
 Register:          8, value: 1919706145
+Register:          9, value:          0
+Register:         10, value:          1
 ...
 Addr:          0, value: 1214606444
 Addr:          4, value: 1864398703
