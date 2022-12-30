@@ -1,7 +1,7 @@
 from parser import *
 import logging
 
-INPUT_FILE = "commands.txt"
+INPUT_FILE = "commands.asm"
 OUTPUT_FILE = "instructions.dat"
 CLEAR_OUTPUT_FILE = True
 
@@ -20,6 +20,8 @@ def main():
         exit(0)
 
     with open(OUTPUT_FILE, "w" if CLEAR_OUTPUT_FILE else "a") as output_file:
+        fill_jump_bookmarks(commands)
+
         for i in range(len(commands)):
             try:
                 should_break_line = process_command(commands[i], output_file)

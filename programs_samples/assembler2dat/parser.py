@@ -84,7 +84,7 @@ def write_command(command, file):
                twos_complement(int(command[2].split("(")[0]), 16)[2:].rjust(16, "0")
     elif operation in (8, 12, 4, 5):
         imm = int(command[-1]) if operation != 5 and operation != 4 \
-            else get_jump_address(command[-1]) - instructions_count
+              else get_jump_address(command[-1]) - instructions_count - 1
         data = fill_to(register_to_code(command[2]), 5) + \
                fill_to(register_to_code(command[1]), 5) + \
                twos_complement(imm, 16)[2:].rjust(16, "0")
@@ -98,13 +98,21 @@ def write_command(command, file):
     instructions_count += 1
 
 
-def add_jump_bookmark(name):
-    jump_bookmarks[name] = instructions_count + 1
+def is_command_jump_bookmark(command):
+    return len(command) == 1 and command[0].endswith(":")
+
+
+def fill_jump_bookmarks(commands):
+    commands_count = 0
+    for command in commands:
+        if is_command_jump_bookmark(command):
+            jump_bookmarks[command[0][:-1]] = commands_count
+        else:
+            commands_count += 1
 
 
 def process_command(command, file):
-    if len(command) == 1 and command[0].endswith(":"):
-        add_jump_bookmark(command[0][:-1])
+    if is_command_jump_bookmark(command):
         return False
     write_command(command, file)
     return True
