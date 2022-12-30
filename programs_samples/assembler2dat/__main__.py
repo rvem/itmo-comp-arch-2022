@@ -21,8 +21,6 @@ def main():
     with open(args.output_file, "a" if args.append_output_file else "w") as output_file:
         fill_jump_bookmarks(commands)
         for i in range(len(commands)):
-            if i == len(commands) - 1:
-                pass
             try:
                 should_break_line = process_command(commands[i], output_file)
                 if i < len(commands) - 1 and should_break_line:
