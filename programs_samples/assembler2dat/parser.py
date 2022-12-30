@@ -121,7 +121,8 @@ def process_command(command, file):
 
 
 def read_commands(file):
+    e: str
     return list(filter(
         lambda x: len(x),
-        [e.strip().lower().split() for e in file.readlines()]
+        [e.split("#")[0].strip().lower().split() for e in file.readlines()]
     ))
