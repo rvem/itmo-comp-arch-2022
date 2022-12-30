@@ -3,12 +3,15 @@ class ParserException(Exception):
 
 
 class UnknownCommandTypeException(ParserException):
-    pass
+    def __str__(self):
+        return "Unknown command type"
 
 
 class UnknownRegisterException(ParserException):
-    pass
+    def __str__(self):
+        return "Unknown register name"
 
 
 class WrongJumpArgumentException(ParserException):
-    pass
+    def __str__(self):
+        return "Unknown jump argument"
