@@ -12,8 +12,12 @@ logger.setLevel(logging.INFO)
 
 
 def main():
-    with open(INPUT_FILE, "r") as input_file:
-        commands = read_commands(input_file)
+    try:
+        with open(INPUT_FILE, "r") as input_file:
+            commands = read_commands(input_file)
+    except FileNotFoundError:
+        logging.critical("File commands.txt not found. Please add it to currant directory!")
+        exit(0)
 
     with open(OUTPUT_FILE, "w" if CLEAR_OUTPUT_FILE else "a") as output_file:
         for i in range(len(commands)):
@@ -28,3 +32,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+ 
