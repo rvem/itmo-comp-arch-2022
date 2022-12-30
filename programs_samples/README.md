@@ -334,3 +334,43 @@ Register:          31, value: 16
 ...
 Addr:          0, value: 16
 ```
+
+## [`bne1.dat`](./bne1.dat)
+
+```
+addi $s0, $0, 9
+addi $s1, $0, 8
+bne $s0, $s1, eq
+add $t1, $s0, $s1
+beq $0, $0, end
+eq:
+sub $t0, $s0, $s1
+end:
+```
+Ожидаемый результат:
+```
+Register:          8, value: 1
+...
+Register:         16, value: 9
+Register:         17, value: 8
+```
+
+## [`bne2.dat`](./bne2.dat)
+
+```
+addi $s0, $0, 8
+addi $s1, $0, 8
+bne $s0, $s1, eq
+add $t1, $s0, $s1
+beq $0, $0, end
+eq:
+sub $t0, $s0, $s1
+end:
+```
+Ожидаемый результат:
+```
+Register:          8, value: 16
+...
+Register:         16, value: 8
+Register:         17, value: 8
+```
