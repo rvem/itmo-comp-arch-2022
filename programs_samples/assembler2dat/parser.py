@@ -33,8 +33,8 @@ def fill_to(num, length):
 
 def string_to_base_alu_operation(rs, rf, rd):
     return fill_to(register_to_code(rs), 5) + \
-        fill_to(register_to_code(rf), 5) + \
-        fill_to(register_to_code(rd), 5)
+           fill_to(register_to_code(rf), 5) + \
+           fill_to(register_to_code(rd), 5)
 
 
 OPCODES = {"lw": "100011",
@@ -56,19 +56,14 @@ instructions_count = 0
 jump_bookmarks = {}
 
 
-def check_int(s):
-    if s[0] in ('-', '+'):
-        return s[1:].isdigit()
-    return s.isdigit()
-
-
 def get_jump_address(value):
     if value in jump_bookmarks:
         return jump_bookmarks[value]
-    elif check_int(value):
-        return int(value)
     else:
-        raise WrongJumpArgumentException
+        try:
+            return int(value)
+        except ValueError:
+            raise WrongJumpArgumentException
 
 
 def write_command(command, file):
@@ -89,7 +84,7 @@ def write_command(command, file):
                twos_complement(int(command[2].split("(")[0]), 16)[2:].rjust(16, "0")
     elif operation in (8, 12, 4, 5):
         imm = int(command[-1]) if operation != 5 and operation != 4 \
-              else get_jump_address(command[-1]) - instructions_count
+            else get_jump_address(command[-1]) - instructions_count
         data = fill_to(register_to_code(command[2]), 5) + \
                fill_to(register_to_code(command[1]), 5) + \
                twos_complement(imm, 16)[2:].rjust(16, "0")
