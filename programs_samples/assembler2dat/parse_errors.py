@@ -4,14 +4,14 @@ class ParserException(Exception):
 
 class UnknownCommandTypeException(ParserException):
     def __str__(self):
-        return "Unknown command type"
+        return "unknown command type"
 
 
 class UnknownRegisterException(ParserException):
     def __str__(self):
-        return "Unknown register name"
+        return "unknown register name"
 
 
 class WrongJumpArgumentException(ParserException):
     def __str__(self):
-        return "Unknown jump argument"
+        return "unknown jump argument"
