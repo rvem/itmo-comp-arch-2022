@@ -25,11 +25,10 @@ def main():
                 should_break_line = process_command(commands[i], output_file)
                 if i < len(commands) - 1 and should_break_line:
                     output_file.write("\n")
-            except ParserException:
+            except Exception:
                 logging.warning(f"Something went wrong during processing command {' '.join(commands[i])}")
     logging.info("Commands was imported")
 
 
 if __name__ == "__main__":
     main()
- 
