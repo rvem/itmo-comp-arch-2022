@@ -56,9 +56,12 @@ instructions_count = 0
 jump_bookmarks = {}
 
 
-def get_jump_address(value):
+def get_jump_address(value, shift=False):
     if value in jump_bookmarks:
-        return jump_bookmarks[value]
+        addr = jump_bookmarks[value]
+        if shift:
+            addr -= instructions_count + 1
+        return addr
     else:
         try:
             return int(value)
@@ -83,8 +86,7 @@ def write_command(command, file):
                fill_to(register_to_code(command[1]), 5) + \
                twos_complement(int(command[2].split("(")[0]), 16)[2:].rjust(16, "0")
     elif operation in (8, 12, 4, 5):
-        imm = int(command[-1]) if operation not in (4, 5) \
-            else get_jump_address(command[-1]) - instructions_count - 1
+        imm = int(command[-1]) if operation not in (4, 5) else get_jump_address(command[-1], True)
         data = fill_to(register_to_code(command[2]), 5) + \
                fill_to(register_to_code(command[1]), 5) + \
                twos_complement(imm, 16)[2:].rjust(16, "0")
