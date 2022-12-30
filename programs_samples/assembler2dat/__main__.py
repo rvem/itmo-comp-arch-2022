@@ -1,9 +1,6 @@
 from parser import *
+import console_arguments
 import logging
-
-INPUT_FILE = "commands.asm"
-OUTPUT_FILE = "instructions.dat"
-CLEAR_OUTPUT_FILE = True
 
 FORMAT = '[%(levelname)s] %(message)s'
 logging.basicConfig(format=FORMAT)
@@ -12,14 +9,16 @@ logger.setLevel(logging.INFO)
 
 
 def main():
+    args = console_arguments.parse_arguments()
+
     try:
-        with open(INPUT_FILE, "r") as input_file:
+        with open(args.input_file, "r") as input_file:
             commands = read_commands(input_file)
     except FileNotFoundError:
-        logging.critical("File commands.txt not found. Please add it to currant directory!")
+        logging.critical(f"File {args.input_file} not found. Please add it to currant directory!")
         exit(0)
 
-    with open(OUTPUT_FILE, "w" if CLEAR_OUTPUT_FILE else "a") as output_file:
+    with open(args.output_file, "a" if args.append_output_file else "w") as output_file:
         fill_jump_bookmarks(commands)
 
         for i in range(len(commands)):
