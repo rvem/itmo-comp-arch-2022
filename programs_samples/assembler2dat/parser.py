@@ -16,6 +16,8 @@ def register_to_code(register: str):
         return 2 + int(register[1])
     elif register.startswith("t"):
         return (8 if int(register[1]) < 8 else 16) + int(register[1])
+    elif register == "at":
+        return 1
     elif register.startswith("a"):
         return 4 + int(register[1])
     elif register.startswith("k"):
