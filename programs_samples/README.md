@@ -369,7 +369,7 @@ end:
 ```
 Ожидаемый результат:
 ```
-Register:          8, value: 16
+Register:          9, value: 16
 ...
 Register:         16, value: 8
 Register:         17, value: 8
