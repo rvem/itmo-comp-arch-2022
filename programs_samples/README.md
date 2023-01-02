@@ -416,3 +416,71 @@ fib:
     
 end:
 ```
+
+Ожидаемый результат:
+```
+Addr:          0, value:          0
+Addr:          4, value:          0
+Addr:          8, value:          0
+Addr:         12, value:          0
+Addr:         16, value:          0
+Addr:         20, value:          0
+Addr:         24, value:          0
+Addr:         28, value:          0
+Addr:         32, value:          0
+Addr:         36, value:          0
+Addr:         40, value:          0
+Addr:         44, value:          0
+Addr:         48, value:          1
+Addr:         52, value:          1
+Addr:         56, value:          2
+Addr:         60, value:          3
+Addr:         64, value:          5
+Addr:         68, value:          8
+Addr:         72, value:         13
+Addr:         76, value:         21
+Addr:         80, value:         34
+Addr:         84, value:         55
+Addr:         88, value:         89
+Addr:         92, value:        144
+Addr:         96, value:        233
+Addr:        100, value:        377
+Addr:        104, value:        610
+Addr:        108, value:        987
+Addr:        112, value:       1597
+Addr:        116, value:       2584
+Addr:        120, value:       4181
+Addr:        124, value:       6765
+Addr:        128, value:      10946
+Addr:        132, value:      17711
+Addr:        136, value:      28657
+Addr:        140, value:      46368
+Addr:        144, value:      75025
+Addr:        148, value:     121393
+Addr:        152, value:     196418
+Addr:        156, value:     317811
+Addr:        160, value:     514229
+Addr:        164, value:     832040
+Addr:        168, value:    1346269
+Addr:        172, value:    2178309
+Addr:        176, value:    3524578
+Addr:        180, value:    5702887
+Addr:        184, value:    9227465
+Addr:        188, value:   14930352
+Addr:        192, value:   24157817
+Addr:        196, value:   39088169
+Addr:        200, value:   63245986
+Addr:        204, value:  102334155
+Addr:        208, value:  165580141
+Addr:        212, value:  267914296
+Addr:        216, value:  433494437
+Addr:        220, value:  701408733
+Addr:        224, value: 1134903170
+Addr:        228, value: 1836311903
+Addr:        232, value:          0
+Addr:        236, value:          0
+Addr:        240, value:          0
+Addr:        244, value:          0
+Addr:        248, value:          0
+Addr:        252, value:          0
+```
