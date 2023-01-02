@@ -419,6 +419,38 @@ end:
 
 Ожидаемый результат:
 ```
+Register:          0, value:          0
+Register:          1, value:          0
+Register:          2, value:          1
+Register:          3, value:          0
+Register:          4, value:        232
+Register:          5, value: 2971215073
+Register:          6, value:          0
+Register:          7, value:          0
+Register:          8, value: 1836311903
+Register:          9, value: 1836311903
+Register:         10, value:          0
+Register:         11, value:          0
+Register:         12, value:          0
+Register:         13, value:          0
+Register:         14, value:          0
+Register:         15, value:          0
+Register:         16, value:        232
+Register:         17, value:          0
+Register:         18, value:          0
+Register:         19, value:          0
+Register:         20, value:          0
+Register:         21, value:          0
+Register:         22, value:          0
+Register:         23, value:          0
+Register:         24, value:          0
+Register:         25, value:          0
+Register:         26, value:          0
+Register:         27, value:          0
+Register:         28, value:          0
+Register:         29, value:          0
+Register:         30, value:          0
+Register:         31, value:         76
 Addr:          0, value:          0
 Addr:          4, value:          0
 Addr:          8, value:          0
