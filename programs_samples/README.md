@@ -374,3 +374,45 @@ Register:          9, value: 16
 Register:         16, value: 8
 Register:         17, value: 8
 ```
+
+## [`fib.dat`](./fib.dat)
+Вычисляет числа Фибоначчи до переполнения, начиная с заданного в первой строке адреса. Используются `lw`, `sw`, `add`, `slt`, `addi`, `bne`, `j`, `jal`, `jr`.
+
+Поставьте больше тактов в `cpu_test.v`, если находятся не все числа (у меня 1000).
+```
+addi $a0, $0, 44
+j fib
+
+sum_last2:
+    lw $t0, -8($a0)
+    lw $t1, -4($a0)
+    add $v0, $t0, $t1
+    jr $ra
+
+check_overflow:
+    lw $t0, -4($a0)
+    slt $v0, $a1, $t0
+    jr $ra
+
+write_to_memory:
+    sw $a1, 0($a0)
+    jr $ra
+
+fib:
+    addi $s0, $0, 1
+    sw $s0, 4($a0)
+    sw $s0, 8($a0)
+    addi $s0, $a0, 12
+
+    for:
+        add $a0, $0, $s0
+        jal sum_last2
+        add $a1, $0, $v0
+        jal check_overflow
+        bne $v0, $0, end
+        jal write_to_memory
+        addi $s0, $s0, 4
+        j for
+    
+end:
+```
