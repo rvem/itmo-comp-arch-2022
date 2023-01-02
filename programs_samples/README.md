@@ -374,3 +374,27 @@ Register:          9, value: 16
 Register:         16, value: 8
 Register:         17, value: 8
 ```
+## [`jr.dat`](./jr.dat)
+
+```
+addi $s0, $0, 7
+j jal_label # j 3
+addi $s1, $0, 8
+jal_label:
+jal funct # jal 6
+addi $s1, $0, 9
+j end # j 8
+funct:
+sw $ra, 0($0)
+jr $ra
+end:
+```
+Ожидаемый результат:
+```
+Register:          16, value: 7
+Register:          17, value: 9
+...
+Register:          31, value: 16
+...
+Addr:          0, value: 16
+```
