@@ -374,3 +374,145 @@ Register:          9, value: 16
 Register:         16, value: 8
 Register:         17, value: 8
 ```
+
+## [`fib.dat`](./fib.dat)
+Вычисляет числа Фибоначчи до переполнения, начиная с заданного в первой строке адреса. Используются `lw`, `sw`, `add`, `slt`, `addi`, `bne`, `j`, `jal`, `jr`.
+
+Поставьте больше тактов в `cpu_test.v`, если находятся не все числа (у меня 1000).
+```
+addi $a0, $0, 44
+j fib
+
+sum_last2:
+    lw $t0, -8($a0)
+    lw $t1, -4($a0)
+    add $v0, $t0, $t1
+    jr $ra
+
+check_overflow:
+    lw $t0, -4($a0)
+    slt $v0, $a1, $t0
+    jr $ra
+
+write_to_memory:
+    sw $a1, 0($a0)
+    jr $ra
+
+fib:
+    addi $s0, $0, 1
+    sw $s0, 4($a0)
+    sw $s0, 8($a0)
+    addi $s0, $a0, 12
+
+    for:
+        add $a0, $0, $s0
+        jal sum_last2
+        add $a1, $0, $v0
+        jal check_overflow
+        bne $v0, $0, end
+        jal write_to_memory
+        addi $s0, $s0, 4
+        j for
+    
+end:
+```
+
+Ожидаемый результат:
+```
+Register:          0, value:          0
+Register:          1, value:          0
+Register:          2, value:          1
+Register:          3, value:          0
+Register:          4, value:        232
+Register:          5, value: 2971215073
+Register:          6, value:          0
+Register:          7, value:          0
+Register:          8, value: 1836311903
+Register:          9, value: 1836311903
+Register:         10, value:          0
+Register:         11, value:          0
+Register:         12, value:          0
+Register:         13, value:          0
+Register:         14, value:          0
+Register:         15, value:          0
+Register:         16, value:        232
+Register:         17, value:          0
+Register:         18, value:          0
+Register:         19, value:          0
+Register:         20, value:          0
+Register:         21, value:          0
+Register:         22, value:          0
+Register:         23, value:          0
+Register:         24, value:          0
+Register:         25, value:          0
+Register:         26, value:          0
+Register:         27, value:          0
+Register:         28, value:          0
+Register:         29, value:          0
+Register:         30, value:          0
+Register:         31, value:         76
+Addr:          0, value:          0
+Addr:          4, value:          0
+Addr:          8, value:          0
+Addr:         12, value:          0
+Addr:         16, value:          0
+Addr:         20, value:          0
+Addr:         24, value:          0
+Addr:         28, value:          0
+Addr:         32, value:          0
+Addr:         36, value:          0
+Addr:         40, value:          0
+Addr:         44, value:          0
+Addr:         48, value:          1
+Addr:         52, value:          1
+Addr:         56, value:          2
+Addr:         60, value:          3
+Addr:         64, value:          5
+Addr:         68, value:          8
+Addr:         72, value:         13
+Addr:         76, value:         21
+Addr:         80, value:         34
+Addr:         84, value:         55
+Addr:         88, value:         89
+Addr:         92, value:        144
+Addr:         96, value:        233
+Addr:        100, value:        377
+Addr:        104, value:        610
+Addr:        108, value:        987
+Addr:        112, value:       1597
+Addr:        116, value:       2584
+Addr:        120, value:       4181
+Addr:        124, value:       6765
+Addr:        128, value:      10946
+Addr:        132, value:      17711
+Addr:        136, value:      28657
+Addr:        140, value:      46368
+Addr:        144, value:      75025
+Addr:        148, value:     121393
+Addr:        152, value:     196418
+Addr:        156, value:     317811
+Addr:        160, value:     514229
+Addr:        164, value:     832040
+Addr:        168, value:    1346269
+Addr:        172, value:    2178309
+Addr:        176, value:    3524578
+Addr:        180, value:    5702887
+Addr:        184, value:    9227465
+Addr:        188, value:   14930352
+Addr:        192, value:   24157817
+Addr:        196, value:   39088169
+Addr:        200, value:   63245986
+Addr:        204, value:  102334155
+Addr:        208, value:  165580141
+Addr:        212, value:  267914296
+Addr:        216, value:  433494437
+Addr:        220, value:  701408733
+Addr:        224, value: 1134903170
+Addr:        228, value: 1836311903
+Addr:        232, value:          0
+Addr:        236, value:          0
+Addr:        240, value:          0
+Addr:        244, value:          0
+Addr:        248, value:          0
+Addr:        252, value:          0
+```
