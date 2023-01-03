@@ -391,7 +391,7 @@ multiply:
     add $t9, $t8, $t9
     add $t3, $t2, $t3
     slt $t5, $t3, $t2
-    bne $t5, $0, 17
+    bne $t5, $0, end # bne $t5, $0, 17
     j for_loop2 # j 6
   addi $t2, $t3, 0
   jr $ra
@@ -405,7 +405,7 @@ memwrite:
   jr $ra
 for_loop:
   slt $t5, $t1, $a1
-  bne $t5, $t8, 4
+  bne $t5, $t8, end # bne $t5, $t8, 4
   add $t1, $t1, $t8
   jal multiply # jal 4
   jal memwrite # jal 14
