@@ -374,3 +374,351 @@ Register:          9, value: 16
 Register:         16, value: 8
 Register:         17, value: 8
 ```
+
+## [`bfs.dat`](./bfs.dat)
+Запускает поиск в ширину в левом верхнем углу лабиринта.
+
+Необходимо увеличить число тактов до 10000 и память инструкций в файле `memory.v` в 40 строке `reg [31:0] ram[0:255]`.
+
+Чтобы получить карту лабиринта по выводу `cpu_test`, можно воспользоваться скриптом `bfs_format.py`.
+
+```
+iverilog -g2001 -s cpu_test cpu_test.v && ./a.out | python3 bfs_format.py
+```
+
+<details>
+  <summary>bfs_format.py</summary>
+
+  ```py
+  import sys
+  arr = [int(line.split()[-1]) - 2 for line in sys.stdin if 'Addr' in line]
+  arr = [str(el % 10) if el > 0 else str(el) for el in arr]
+  print('\n'.join((''.join(arr[i:i+8]).replace('-2', '.').replace('-1', '#') for i in range(0, 64, 8))))
+  ```
+</details>
+
+
+<details>
+  <summary>Ожидаемый результат</summary>
+
+  ```
+  Register:          0, value:          0
+  Register:          1, value:          0
+  Register:          2, value:          0
+  Register:          3, value:          0
+  Register:          4, value:         57
+  Register:          5, value:          1
+  Register:          6, value:         25
+  Register:          7, value:          0
+  Register:          8, value:          8
+  Register:          9, value:          0
+  Register:         10, value:          0
+  Register:         11, value:          7
+  Register:         12, value:          1
+  Register:         13, value:          0
+  Register:         14, value:          0
+  Register:         15, value:         12
+  Register:         16, value:        584
+  Register:         17, value:        584
+  Register:         18, value:          0
+  Register:         19, value:          7
+  Register:         20, value:          0
+  Register:         21, value:          0
+  Register:         22, value:          0
+  Register:         23, value:          0
+  Register:         24, value:        316
+  Register:         25, value:        176
+  Register:         26, value:          0
+  Register:         27, value:          0
+  Register:         28, value:          0
+  Register:         29, value:          0
+  Register:         30, value:          0
+  Register:         31, value:        240
+  Addr:          0, value:          2
+  Addr:          4, value:          3
+  Addr:          8, value:          4
+  Addr:         12, value:          5
+  Addr:         16, value:          6
+  Addr:         20, value:          7
+  Addr:         24, value:          8
+  Addr:         28, value:          9
+  Addr:         32, value:          3
+  Addr:         36, value:          4
+  Addr:         40, value:          5
+  Addr:         44, value:          6
+  Addr:         48, value:          7
+  Addr:         52, value:          8
+  Addr:         56, value:          9
+  Addr:         60, value:         10
+  Addr:         64, value:          1
+  Addr:         68, value:          1
+  Addr:         72, value:          1
+  Addr:         76, value:          1
+  Addr:         80, value:          1
+  Addr:         84, value:          1
+  Addr:         88, value:          1
+  Addr:         92, value:         11
+  Addr:         96, value:         19
+  Addr:        100, value:         18
+  Addr:        104, value:         17
+  Addr:        108, value:         16
+  Addr:        112, value:         15
+  Addr:        116, value:         14
+  Addr:        120, value:         13
+  Addr:        124, value:         12
+  Addr:        128, value:          1
+  Addr:        132, value:          1
+  Addr:        136, value:         18
+  Addr:        140, value:          1
+  Addr:        144, value:          1
+  Addr:        148, value:          1
+  Addr:        152, value:         14
+  Addr:        156, value:          1
+  Addr:        160, value:          0
+  Addr:        164, value:          1
+  Addr:        168, value:         19
+  Addr:        172, value:          1
+  Addr:        176, value:         17
+  Addr:        180, value:         16
+  Addr:        184, value:         15
+  Addr:        188, value:         16
+  Addr:        192, value:          1
+  Addr:        196, value:          1
+  Addr:        200, value:         20
+  Addr:        204, value:          1
+  Addr:        208, value:          1
+  Addr:        212, value:          1
+  Addr:        216, value:         16
+  Addr:        220, value:          1
+  Addr:        224, value:         23
+  Addr:        228, value:         22
+  Addr:        232, value:         21
+  Addr:        236, value:          1
+  Addr:        240, value:         19
+  Addr:        244, value:         18
+  Addr:        248, value:         17
+  Addr:        252, value:         18
+  ```
+</details>
+
+Ожидаемая карта:
+```
+01234567
+12345678
+#######9
+76543210
+##6###2#
+.#7#5434
+##8###4#
+109#7656
+```
+
+<details>
+  <summary>asm</summary>
+
+  ```asm
+  main:
+    jal init_queue
+    jal fill
+    jal bfs
+    j end
+
+  init_queue:
+      addi $s0, $0, 256
+      addi $s1, $0, 256
+      jr $ra
+
+  push:
+      sw $a0, 0($s1)
+      addi $s1, $s1, 4
+      jr $ra
+
+  extract:
+      lw $v0, 0($s0)
+      addi $s0, $s0, 4
+      jr $ra
+
+  size:
+      sub $v0, $s1, $s0
+      jr $ra
+
+  mul4:
+      add $v0, $a0, $a0
+      add $v0, $v0, $v0
+      jr $ra
+
+  mul8:
+      add $v0, $a0, $a0
+      add $v0, $v0, $v0
+      add $v0, $v0, $v0
+      jr $ra
+
+  set:
+      add $t9, $0, $ra
+      jal mul8
+      add $a0, $v0, $a1
+      jal mul4
+      sw $a2, 0($v0)
+      jr $t9
+
+  get:
+      add $t9, $0, $ra
+      jal mul8
+      add $a0, $v0, $a1
+      jal mul4
+      lw $v0, 0($v0)
+      jr $t9
+
+  push_if_possible:
+      add $t8, $0, $ra
+
+      addi $t0, $0, -1
+      beq $a0, $t0, end_push_if_possible
+      beq $a1, $t0, end_push_if_possible
+      addi $t0, $0, 8
+      beq $a0, $t0, end_push_if_possible
+      beq $a1, $t0, end_push_if_possible
+
+      add $t3, $0, $a0
+      add $t4, $0, $a1
+      jal get
+      bne $v0, $0, end_push_if_possible
+
+      add $a0, $0, $t3
+      jal push
+      add $a0, $0, $t4
+      jal push
+
+      add $a0, $0, $t3
+      add $a1, $0, $t4
+
+      jal set
+
+      end_push_if_possible:
+          jr $t8
+
+  bfs:
+      add $t7, $0, $ra
+
+      addi $a2, $0, 2
+
+      addi $a0, $0, 0
+      addi $a1, $0, 0
+      jal push_if_possible 
+
+      bfs_while:
+          addi $a2, $a2, 1
+          jal size
+          beq $v0, $0, end_bfs
+
+          add $s2, $0, $v0
+          front_while:
+              addi $s2, $s2, -8
+
+              jal extract
+              add $s3, $0, $v0
+
+              jal extract
+              add $s4, $0, $v0
+
+              addi $a0, $s3, -1
+              addi $a1, $s4, 0
+              jal push_if_possible 
+
+              addi $a0, $s3, 1
+              addi $a1, $s4, 0
+              jal push_if_possible 
+
+              addi $a0, $s3, 0
+              addi $a1, $s4, -1
+              jal push_if_possible 
+
+              addi $a0, $s3, 0
+              addi $a1, $s4, 1
+              jal push_if_possible 
+
+
+              bne $s2, $0, front_while
+
+          j bfs_while
+
+      end_bfs:
+          jr $t7
+
+  fill:
+      add $t7, $0, $ra
+
+      addi $a1, $0, 8
+      addi $a2, $0, 1
+      fill_while:
+          addi $a1, $a1, -1
+          
+          addi $a0, $0, 2
+          jal set
+
+          addi $a0, $0, 4
+          jal set
+
+          addi $a0, $0, 5
+          jal set
+
+          addi $a0, $0, 6
+          jal set
+
+          bne $a1, $0, fill_while
+
+      addi $a0, $0, 7
+      addi $a1, $0, 3
+      jal set
+
+      addi $a2, $0, 0
+
+      addi $a0, $0, 2
+      addi $a1, $0, 7
+      jal set
+
+      addi $a0, $0, 4
+      addi $a1, $0, 2
+      jal set
+
+      addi $a0, $0, 5
+      addi $a1, $0, 2
+      jal set
+
+      addi $a0, $0, 6
+      addi $a1, $0, 2
+      jal set
+
+      addi $a0, $0, 5
+      addi $a1, $0, 0
+      jal set
+
+      addi $a0, $0, 5
+      addi $a1, $0, 4
+      jal set
+
+      addi $a0, $0, 5
+      addi $a1, $0, 5
+      jal set
+
+      addi $a0, $0, 5
+      addi $a1, $0, 6
+      jal set
+
+      addi $a0, $0, 5
+      addi $a1, $0, 7
+      jal set
+
+      addi $a0, $0, 4
+      addi $a1, $0, 6
+      jal set
+
+      addi $a0, $0, 6
+      addi $a1, $0, 6
+      jal set
+
+      jr $t7
+
+  end:
+  ```
+</details>
