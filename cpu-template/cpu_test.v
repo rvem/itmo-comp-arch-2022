@@ -61,11 +61,17 @@ module cpu_test();
     end
     // Дампим регистры
     for (reg_counter = 0; reg_counter < 32; reg_counter = reg_counter + 1) begin
-      $display("Register: %d, value: %d", reg_counter, cpu_register.mem[reg_counter]);
+      if (cpu_register.mem[reg_counter] != 0) begin
+        $display("Register: %d, value: %d", reg_counter, cpu_register.mem[reg_counter]);
+      end
     end
+    $display("Остальные регистры нулёвые");
     // Дампим память данных
     for (mem_counter = 0; mem_counter < 64; mem_counter = mem_counter + 1) begin
-      $display("Addr: %d, value: %d", mem_counter * 4, cpu_data_memory.ram[mem_counter]);
+      if (cpu_data_memory.ram[mem_counter] != 0) begin
+        $display("Addr: %d, value: %d", mem_counter * 4, cpu_data_memory.ram[mem_counter]);
+      end
     end
+    $display("Остальная ram нулёвая");
   end
 endmodule
