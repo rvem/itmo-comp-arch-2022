@@ -374,3 +374,70 @@ Register:          9, value: 16
 Register:         16, value: 8
 Register:         17, value: 8
 ```
+
+
+## [`factorial.dat`](./factorial.dat)
+
+```
+addi $t8, $0, 1
+addi $t2, $0, 1
+addi $a1, $0, 100
+j for_loop # j 21
+multiply:
+  andi $t9, $0, 0
+  andi $t3, $0, 0
+  for_loop2:
+    beq $t1, $t9, 5
+    add $t9, $t8, $t9
+    add $t3, $t2, $t3
+    slt $t5, $t3, $t2
+    bne $t5, $0, 17
+    j for_loop2 # j 6
+  addi $t2, $t3, 0
+  jr $ra
+memwrite:
+  addi $t4, $0, 0
+  add $t4, $t1, $t4
+  add $t4, $t1, $t4
+  add $t4, $t1, $t4
+  add $t4, $t1, $t4
+  sw $t2, 0($t4)
+  jr $ra
+for_loop:
+  slt $t5, $t1, $a1
+  bne $t5, $t8, 4
+  add $t1, $t1, $t8
+  jal multiply # jal 4
+  jal memwrite # jal 14
+  j for_loop # j 21
+end:
+```
+Ожидаемый результат:
+```
+Register:          5, value:        100
+...
+Register:          9, value:         13
+Register:         10, value:  479001600
+Register:         11, value: 2395008000
+Register:         12, value:         48
+Register:         13, value:          1
+...
+Register:         24, value:          1
+Register:         25, value:          5
+...
+Register:         31, value:        100
+...
+Addr:          0, value:          0
+Addr:          4, value:          1
+Addr:          8, value:          2
+Addr:         12, value:          6
+Addr:         16, value:         24
+Addr:         20, value:        120
+Addr:         24, value:        720
+Addr:         28, value:       5040
+Addr:         32, value:      40320
+Addr:         36, value:     362880
+Addr:         40, value:    3628800
+Addr:         44, value:   39916800
+Addr:         48, value:  479001600
+Addr:         52, value:          0
