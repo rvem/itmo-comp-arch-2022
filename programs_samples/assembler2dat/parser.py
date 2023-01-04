@@ -10,7 +10,9 @@ def twos_complement(n, bits):
 
 def register_to_code(register: str):
     register = register.lstrip("$").rstrip(",")
-    if register.startswith("s"):
+    if register == "sp":
+        return 29
+    elif register.startswith("s"):
         return 16 + int(register[1])
     elif register.startswith("v"):
         return 2 + int(register[1])
@@ -24,6 +26,10 @@ def register_to_code(register: str):
         return 26 + int(register[1])
     elif register == "0":
         return 0
+    elif register == "gp":
+        return 28
+    elif register == "fp":
+        return 30
     elif register == "ra":
         return 31
     raise UnknownRegisterException
@@ -52,7 +58,8 @@ FUNCTORS = {"add": "100000",
             "and": "100100",
             "or": "100101",
             "slt": "101010",
-            "jr": "001000"}
+            "jr": "001000",
+            "jalr": "001001"}
 
 instructions_count = 0
 jump_bookmarks = {}
@@ -77,9 +84,12 @@ def write_command(command, file):
     operation = int(opcode, 2)
 
     if operation == 0:
-        if command[0] != "jr":
+        if command[0] not in ("jr", "jalr"):
             data = string_to_base_alu_operation(command[2], command[3], command[1]) + \
                    "00000" + FUNCTORS[command[0]]
+        elif command[0] == "jalr":
+            data = fill_to(register_to_code(command[1]), 5) + "0" * 5 + \
+                   fill_to(register_to_code(command[2]), 5) + "0" * 5 + FUNCTORS[command[0]]
         else:
             data = fill_to(register_to_code(command[1]), 5) + \
                    "0" * 15 + FUNCTORS[command[0]]
